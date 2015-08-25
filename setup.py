@@ -21,7 +21,7 @@ setup(
     packages=['clerk'],
     license="MIT",
     keywords='SCOTUS data parsing scraping legal law court',
-    install_requires=[],
+    install_requires=['requests'],
     classifiers=['Development Status :: 4 - Beta',
                  'Intended Audience :: Developers',
                  'License :: OSI Approved :: Apache 2.0 Software License',
