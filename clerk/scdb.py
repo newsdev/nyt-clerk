@@ -196,7 +196,7 @@ class Load(BaseObject):
 
 
     def clean(self):
-        os.system('rm -rf %s/%s.*' % (self.DATA_DIRECTORY, self.SCDB_FILENAME))
+        os.system('rm -f %s/%s.*' % (self.DATA_DIRECTORY, self.SCDB_FILENAME))
 
 if __name__ == "__main__":
     Load()
