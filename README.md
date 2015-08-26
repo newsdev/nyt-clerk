@@ -4,6 +4,7 @@
 ```
 python -m clerk.scdb
 python -m clerk.scotus
+python -m clerk.scores
 ```
 
 ## Data
