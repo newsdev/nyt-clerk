@@ -2,6 +2,7 @@
 
 ## Usage
 ```
+pip install -e git@github.com:newsdev/nyt-clerk.git#egg=clerk
 python -m clerk.scdb
 python -m clerk.scotus
 python -m clerk.scores
