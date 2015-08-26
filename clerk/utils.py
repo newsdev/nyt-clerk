@@ -1,3 +1,5 @@
+import datetime
+
 def current_term():
     now = datetime.datetime.now()
     if now.month < 10:

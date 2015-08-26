@@ -146,9 +146,6 @@ class Load(BaseObject):
 
         print self.start
 
-        for k,v in kwargs.items():
-            setattr(self, k, v)
-
         self.set_data_directory()
         self.download()
         self.load()
@@ -188,13 +185,13 @@ class Load(BaseObject):
                 processed_justices.append(row['justice'])
 
     def write(self):
-        with open('%s/cases.json' % (self.DATA_DIRECTORY), 'w') as writefile:
+        with open('%s/scdb_cases.json' % (self.DATA_DIRECTORY), 'w') as writefile:
             writefile.write(json.dumps([c.__dict__ for c in self.cases]))
 
-        with open('%s/justices.json' % (self.DATA_DIRECTORY), 'w') as writefile:
+        with open('%s/scdb_justices.json' % (self.DATA_DIRECTORY), 'w') as writefile:
             writefile.write(json.dumps([j.__dict__ for j in self.justices]))
 
-        with open('%s/votes.json' % (self.DATA_DIRECTORY), 'w') as writefile:
+        with open('%s/scdb_votes.json' % (self.DATA_DIRECTORY), 'w') as writefile:
             writefile.write(json.dumps([v.__dict__ for v in self.votes]))
 
 
