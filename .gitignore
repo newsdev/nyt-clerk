@@ -1,3 +1,5 @@
 clerk/data/
 *.pyc
 *.pyo
+dist/
+nyt_clerk.egg-info/
