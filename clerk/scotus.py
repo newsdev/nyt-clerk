@@ -30,7 +30,7 @@ class BaseObject(object):
         "EK": "EKagan",
     }
 
-    ARGUMENTS_BASE_URL = 'http://www.supremecourt.gov/grantednotedlist/%(term)sgrantednotedlist'
+    ARGUMENTS_BASE_URL = 'http://www.supremecourt.gov/oral_arguments/argument_transcript/%(term)s'
     AUDIO_BASE_URL = 'http://www.supremecourt.gov/oral_arguments/argument_audio/%(term)s'
     OPINIONS_BASE_URL = 'http://www.supremecourt.gov/opinions/slipopinion/%(term)s'
 
@@ -65,8 +65,8 @@ class MeritsCase(BaseObject):
         self.term = None
         self.docket = None
         self.argument_date = None
-        self.short_name = None
         self.decision_date = None
+        self.short_name = None
         self.opinion_pdf_url = None
         self.decision = None
         self.argument_pdf = []
@@ -90,8 +90,18 @@ class Load(BaseObject):
         print self.start
 
         self.set_data_directory()
-        self.scrape()
-        self.parse()
+
+        # Scrape
+        self.scrape_opinions()
+        self.scrape_audio()
+        self.scrape_arguments()
+
+        # Parse
+        self.parse_opinions()
+        self.parse_audio()
+        self.parse_arguments()
+
+        # Write
         self.write()
 
         self.end = datetime.datetime.now()
@@ -100,17 +110,19 @@ class Load(BaseObject):
         self.duration = self.end - self.start
         print "Took %s" % self.duration
 
-    def scrape(self):
-        # for term in self.ARGUMENTS_TERMS:
-        #     self.arguments_html[str(term)] = requests.get(self.ARGUMENTS_BASE_URL % {'term': str(term)[2:4]}).text
+    def scrape_arguments(self):
+        for term in self.ARGUMENTS_TERMS:
+            self.arguments_html[str(term)] = requests.get(self.ARGUMENTS_BASE_URL % {'term': str(term)}).text
 
+    def scrape_audio(self):
         for term in self.AUDIO_TERMS:
             self.audio_html[str(term)] = requests.get(self.AUDIO_BASE_URL % {'term': str(term)}).text
 
+    def scrape_opinions(self):
         for term in self.OPINIONS_TERMS:
             self.opinions_html[str(term)] = requests.get(self.OPINIONS_BASE_URL % {'term': str(term)[2:4]}).content
 
-    def parse(self):
+    def parse_opinions(self):
         for term in self.OPINIONS_TERMS:
             soup = BeautifulSoup(self.opinions_html[str(term)], 'lxml')
             rows = soup.select('center')[0].select('table')[0].select('tr')[1:]
@@ -129,6 +141,7 @@ class Load(BaseObject):
                     self.cases[composite] = {}
                 self.cases[composite].update(case_dict)
 
+    def parse_audio(self):
         for term in self.AUDIO_TERMS:
             soup = BeautifulSoup(self.audio_html[str(term)], 'lxml')
             rows = soup.select('table.datatables')[0].select('tr')[1:]
@@ -142,8 +155,7 @@ class Load(BaseObject):
                     case_dict['term'] = str(term)
                     case_dict['argument_date'] = cells[1].text.strip()
 
-                    # The oral audio append text to the docket, e.g., 'reargued'
-                    # or 'question 1' sometimes.
+                    # The oral audio page sometimes append text to the docket ID.
                     possible_docket = cells[0].select('a')[0].text.strip()
 
                     #  14-556-Question-2, 11-398-Monday
@@ -179,14 +191,51 @@ class Load(BaseObject):
                 except IndexError:
                     pass
 
-        for k,v in self.cases.items():
-            print k,v
+    def parse_arguments(self):
+        for term in self.ARGUMENTS_TERMS:
+            soup = BeautifulSoup(self.arguments_html[str(term)], 'lxml')
+            rows = soup.select('table.datatables')[0].select('tr')[1:]
+            for row in rows:
 
-        # for term in self.ARGUMENTS_TERMS:
+                cells = row.select('td')
+
+                try:
+                    case_dict = {}
+                    case_dict['term'] = str(term)
+
+                    # The arguments sometimes append text to the docket ID.
+                    possible_docket = cells[0].select('a')[0].text.strip()
+
+                    #  14-556-Question-2, 11-398-Monday
+                    if "-" in possible_docket:
+                        case_dict['docket'] = possible_docket.split('-')[0].strip() + '-' + possible_docket.split('-')[1].strip()
+
+                    # 10-1491 (Reargued)
+                    elif " " in possible_docket:
+                        case_dict['docket'] = possible_docket.split(' ')[0].strip()
+
+                    else:
+                        case_dict['docket'] = possible_docket
+
+                    case_dict['argument_pdf'] = []
+                    case_dict['argument_pdf'].append('http://www.supremecourt.gov/oral_arguments' + cells[0].select('a')[0]['href'].split('..')[1])
+
+                    composite = case_dict['term'] + ' ' + case_dict['docket']
+                    if not self.cases.get(composite, None):
+                        self.cases[composite] = {}
+
+                    # Deal with possibly multiple argument_pdf URLs.
+                    if self.cases[composite].get('argument_pdf', None):
+                        case_dict['argument_pdf'] = case_dict['argument_pdf'] + self.cases[composite]['argument_pdf']
+
+                    self.cases[composite].update(case_dict)
+
+                except IndexError:
+                    pass
 
     def write(self):
-        pass
+        with open('%s/scotus_cases.json' % (self.DATA_DIRECTORY), 'w') as writefile:
+            writefile.write(json.dumps([v for k,v in self.cases.items()]))
 
 if __name__ == "__main__":
     Load()
-
