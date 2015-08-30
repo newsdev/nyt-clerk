@@ -24,8 +24,6 @@ Archive:  /Users/user_name/code/nyt-clerk/clerk/data/SCDB_2015_01_justiceCentere
 36
 ```
 
-Or you 
-
 ## Data
 * `clerk/data/scdb_cases.json`: SCDB fields about decided merits cases, excluding the justice and vote details.
 * `clerk/data/scdb_justices.json`: SCDB fields about individual justices.
