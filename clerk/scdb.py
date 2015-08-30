@@ -143,20 +143,7 @@ class Load(BaseObject):
         self.justices = []
         self.votes = []
         self.start = datetime.datetime.now()
-
-        print self.start
-
         self.set_data_directory()
-        self.download()
-        self.load()
-        self.write()
-        self.clean()
-
-        self.end = datetime.datetime.now()
-        print self.end
-
-        self.duration = self.end - self.start
-        print "Took %s" % self.duration
 
     def download(self):
         r = requests.get(self.SCDB_URL)
@@ -199,4 +186,16 @@ class Load(BaseObject):
         os.system('rm -f %s/%s.*' % (self.DATA_DIRECTORY, self.SCDB_FILENAME))
 
 if __name__ == "__main__":
-    Load()
+    l = Load()
+    print self.start
+
+    l.download()
+    l.load()
+    l.write()
+    l.clean()
+
+    l.end = datetime.datetime.now()
+    print l.end
+
+    l.duration = l.end - l.start
+    print "Took %s" % l.duration

@@ -12,7 +12,7 @@ def read(filename):
 
 setup(
     name='nyt-clerk',
-    version='0.0.1',
+    version='0.0.2',
     author='Jeremy Bowers',
     author_email='jeremy.bowers@nytimes.com',
     url='',
@@ -24,7 +24,6 @@ setup(
     install_requires=['beautifulsoup4==4.4.0','html5lib==0.999999','lxml==3.4.4','requests==2.7.0','six==1.9.0','wheel==0.24.0'],
     classifiers=['Development Status :: 4 - Beta',
                  'Intended Audience :: Developers',
-                 'License :: OSI Approved :: Apache 2.0 Software License',
                  'Programming Language :: Python',
                  'Topic :: Software Development :: Libraries :: Python Modules']
 )

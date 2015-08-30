@@ -86,29 +86,7 @@ class Load(BaseObject):
         self.audio_html = {}
         self.cases = {}
         self.start = datetime.datetime.now()
-
-        print self.start
-
         self.set_data_directory()
-
-        # Scrape
-        self.scrape_opinions()
-        self.scrape_audio()
-        self.scrape_arguments()
-
-        # Parse
-        self.parse_opinions()
-        self.parse_audio()
-        self.parse_arguments()
-
-        # Write
-        self.write()
-
-        self.end = datetime.datetime.now()
-        print self.end
-
-        self.duration = self.end - self.start
-        print "Took %s" % self.duration
 
     def scrape_arguments(self):
         for term in self.ARGUMENTS_TERMS:
@@ -238,4 +216,24 @@ class Load(BaseObject):
             writefile.write(json.dumps([v for k,v in self.cases.items()]))
 
 if __name__ == "__main__":
-    Load()
+    l = Load()
+    print l.start
+
+    # Scrape
+    l.scrape_opinions()
+    l.scrape_audio()
+    l.scrape_arguments()
+
+    # Parse
+    l.parse_opinions()
+    l.parse_audio()
+    l.parse_arguments()
+
+    # Write
+    l.write()
+
+    l.end = datetime.datetime.now()
+    print l.end
+
+    l.duration = l.end - l.start
+    print "Took %s" % l.duration

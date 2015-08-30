@@ -83,21 +83,7 @@ class Load(BaseObject):
         self.courtterms = []
         self.justiceterms = []
         self.start = datetime.datetime.now()
-
-        print self.start
-
         self.set_data_directory()
-
-        self.download()
-        self.load()
-        self.write()
-        self.clean()
-
-        self.end = datetime.datetime.now()
-        print self.end
-
-        self.duration = self.end - self.start
-        print "Took %s" % self.duration
 
     def download(self):
         for filename in [self.MQ_JUSTICES_URL, self.MQ_COURTS_URL, self.SC_JUSTICES_URL]:
@@ -153,4 +139,16 @@ class Load(BaseObject):
             os.system('rm -f %s/%s' % (self.DATA_DIRECTORY, filename.split('/')[-1]))
 
 if __name__ == "__main__":
-    Load()
+    l = Load()
+    print self.start
+
+    l.download()
+    l.load()
+    l.write()
+    l.clean()
+
+    l.end = datetime.datetime.now()
+    print l.end
+
+    l.duration = l.end - l.start
+    print "Took %s" % l.duration
