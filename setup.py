@@ -12,12 +12,12 @@ def read(filename):
 
 setup(
     name='nyt-clerk',
-    version='0.0.2',
+    version='0.0.4',
     author='Jeremy Bowers',
     author_email='jeremy.bowers@nytimes.com',
-    url='',
+    url='https://github.com/newsdev/nyt-clerk',
     description='Python client for parsing SCOTUS data from multiple sources.',
-    long_description=read('README.md'),
+    long_description=read('README.rst'),
     packages=['clerk'],
     license="MIT",
     keywords='SCOTUS data parsing scraping legal law court',

@@ -140,7 +140,7 @@ class Load(BaseObject):
 
 if __name__ == "__main__":
     l = Load()
-    print self.start
+    print l.start
 
     l.download()
     l.load()
