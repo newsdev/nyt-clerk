@@ -1,12 +1,30 @@
 ![](https://cloud.githubusercontent.com/assets/109988/9503675/7a4bdfee-4c06-11e5-8619-e8f85ccb49f2.png)
 
 ## Usage
+#### As Python modules
 ```
-pip install -e git@github.com:newsdev/nyt-clerk.git#egg=clerk
 python -m clerk.scdb
 python -m clerk.scotus
 python -m clerk.scores
 ```
+
+#### More control
+```
+>>> from clerk import scdb
+>>> l = scdb.Load()
+>>> l.download()
+Archive:  /Users/user_name/code/nyt-clerk/clerk/data/SCDB_2015_01_justiceCentered_Citation.csv.zip
+  inflating: /Users/user_name/code/nyt-clerk/clerk/data/SCDB_2015_01_justiceCentered_Citation.csv
+>>> l.load()
+>>> len(l.cases)
+8631
+>>> len(l.votes)
+77342
+>>> len(l.justices)
+36
+```
+
+Or you 
 
 ## Data
 * `clerk/data/scdb_cases.json`: SCDB fields about decided merits cases, excluding the justice and vote details.
