@@ -185,19 +185,18 @@ class Load(BaseObject):
                     # The arguments sometimes append text to the docket ID.
                     possible_docket = cells[0].select('a')[0].text.strip()
 
+                    case_dict['docket'] = possible_docket
+
                     #  14-556-Question-2, 11-398-Monday
                     if "-" in possible_docket:
                         case_dict['docket'] = possible_docket.split('-')[0].strip() + '-' + possible_docket.split('-')[1].strip()
 
                     # 10-1491 (Reargued)
-                    elif " " in possible_docket:
+                    if " " in possible_docket:
                         case_dict['docket'] = possible_docket.split(' ')[0].strip()
 
-                    elif "." in possible_docket:
+                    if "." in possible_docket:
                         case_dict['docket'] = possible_docket.replace('.', '')
-
-                    else:
-                        case_dict['docket'] = possible_docket
 
                     case_dict['argument_pdf'] = []
                     case_dict['argument_pdf'].append('http://www.supremecourt.gov/oral_arguments' + cells[0].select('a')[0]['href'].split('..')[1])
