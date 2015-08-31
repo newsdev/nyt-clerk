@@ -193,6 +193,9 @@ class Load(BaseObject):
                     elif " " in possible_docket:
                         case_dict['docket'] = possible_docket.split(' ')[0].strip()
 
+                    elif "." in possible_docket:
+                        case_dict['docket'] = possible_docket.replace('.', '')
+
                     else:
                         case_dict['docket'] = possible_docket
 
