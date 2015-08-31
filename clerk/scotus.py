@@ -70,7 +70,7 @@ class MeritsCase(BaseObject):
         self.opinion_pdf_url = None
         self.decision = None
         self.argument_pdf = []
-        self.audo_mp3 = []
+        self.audio_mp3 = []
 
         self.set_fields()
 
