@@ -69,7 +69,7 @@ class MeritsCase(BaseObject):
         self.argument_pdf = []
         self.audio_mp3 = []
 
-        self.set_fields()
+        self.set_fields(**kwargs)
 
         def __unicode__(self):
             return "%s (%s)" % (self.short_name, self.term)
@@ -110,7 +110,6 @@ class Load(BaseObject):
                 case_dict['decision_date'] = cells[1].text.strip()
                 case_dict['short_name'] = cells[3].text.strip()
                 case_dict['opinion_pdf_url'] = 'http://www.supremecourt.gov' + cells[3].select('a')[0].attrs['href'].strip()
-                case_dict['decision'] = self.JUSTICE_DECISION_MAP[cells[4].text.strip()]
 
                 composite = case_dict['term'] + ' ' + case_dict['docket']
                 if not self.cases.get(composite, None):
