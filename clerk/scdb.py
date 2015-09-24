@@ -45,6 +45,7 @@ class Vote(BaseObject):
         self.firstagreement = None
         self.secondagreement = None
         self.voteid = None
+        self.term = None
 
         self.set_fields(**kwargs)
 
