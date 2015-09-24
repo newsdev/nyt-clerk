@@ -49,7 +49,6 @@ class JusticeTerm(BaseObject):
         self.justice = None
         self.term = None
         self.martin_quinn_score = None
-        self.median_justice = None
 
         self.set_fields(**kwargs)
 
