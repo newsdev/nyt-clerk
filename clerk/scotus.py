@@ -64,11 +64,8 @@ class MeritsCase(BaseObject):
     def __init__(self, **kwargs):
         self.term = None
         self.docket = None
-        self.argument_date = None
-        self.decision_date = None
         self.short_name = None
         self.opinion_pdf_url = None
-        self.decision = None
         self.argument_pdf = []
         self.audio_mp3 = []
 
