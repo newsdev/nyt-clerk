@@ -107,7 +107,6 @@ class Load(BaseObject):
                 cells = row.select('td')
                 case_dict['term'] = str(term)
                 case_dict['docket'] = cells[2].text.strip()
-                case_dict['decision_date'] = cells[1].text.strip()
                 case_dict['short_name'] = cells[3].text.strip()
                 case_dict['opinion_pdf_url'] = 'http://www.supremecourt.gov' + cells[3].select('a')[0].attrs['href'].strip()
 
@@ -128,7 +127,6 @@ class Load(BaseObject):
                 try:
                     case_dict = {}
                     case_dict['term'] = str(term)
-                    case_dict['argument_date'] = cells[1].text.strip()
 
                     # The oral audio page sometimes append text to the docket ID.
                     possible_docket = cells[0].select('a')[0].text.strip()
