@@ -121,8 +121,8 @@ class Load(BaseObject):
                 score_dict = {}
                 score_dict['justice'] = score['justice']
                 score_dict['full_name'] = unicode(score['full_name'].decode('utf-8')).strip()
-                score_dict['first_name'] = unicode(score_dict['full_name'].split()[0]).strip()
-                score_dict['last_name'] = unicode(" ".join(score_dict['full_name'].split()[1:])).strip()
+                score_dict['last_name'] = unicode(score_dict['full_name'].split()[-1]).strip()
+                score_dict['first_name'] = score_dict['full_name'].replace(score_dict['last_name'], '').strip()
                 score_dict['segal_cover_ideology_score'] = score['ideology_score']
                 score_dict['segal_cover_qualification_score'] = score['qualifications_score']
                 self.justices.append(Justice(**score_dict))
