@@ -165,7 +165,9 @@ class Load(BaseObject):
             self.votes.append(Vote(**row))
 
             if row['docketId'] not in processed_cases:
-                self.cases.append(MeritsCase(**row))
+                m = MeritsCase(**row)
+                m = utils.set_weighted_majvotes(m)
+                self.cases.append(m)
                 processed_cases.append(row['docketId'])
 
             if row['justice'] not in processed_justices:
