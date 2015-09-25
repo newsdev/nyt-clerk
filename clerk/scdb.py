@@ -7,6 +7,9 @@ import os
 
 import requests
 
+from clerk import utils
+
+
 class BaseObject(object):
     SCDB_URL = 'http://scdb.wustl.edu/_brickFiles/2015_01/SCDB_2015_01_justiceCentered_Citation.csv.zip'
     SCDB_FILENAME = SCDB_URL.split('/')[-1].split('.')[0]
