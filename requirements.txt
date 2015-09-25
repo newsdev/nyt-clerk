@@ -1,6 +1,7 @@
 beautifulsoup4==4.4.0
 html5lib==0.999999
 lxml==3.4.4
+nameparser==0.3.10
 pandoc==1.0.0a8
 pyandoc==0.0.1
 requests==2.7.0
