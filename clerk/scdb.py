@@ -49,6 +49,7 @@ class Vote(BaseObject):
         self.secondagreement = None
         self.voteid = None
         self.term = None
+        self.naturalcourt = None
 
         self.set_fields(**kwargs)
 
