@@ -61,6 +61,8 @@ class Justice(BaseObject):
     def __init__(self, **kwargs):
         self.justice = None
         self.full_name = None
+        self.first_name = None
+        self.last_name = None
         self.segal_cover_ideology_score = None
         self.segal_cover_qualification_score = None
 
@@ -118,7 +120,9 @@ class Load(BaseObject):
             if score['justice']:
                 score_dict = {}
                 score_dict['justice'] = score['justice']
-                score_dict['full_name'] = unicode(score['full_name'].decode('utf-8'))
+                score_dict['full_name'] = unicode(score['full_name'].decode('utf-8')).strip()
+                score_dict['first_name'] = unicode(score_dict['full_name'].split()[0]).strip()
+                score_dict['last_name'] = unicode(" ".join(score_dict['full_name'].split()[1:])).strip()
                 score_dict['segal_cover_ideology_score'] = score['ideology_score']
                 score_dict['segal_cover_qualification_score'] = score['qualifications_score']
                 self.justices.append(Justice(**score_dict))
