@@ -39,6 +39,8 @@ class NaturalCourt(BaseObject):
     def __init__(self, **kwargs):
         self.naturalcourt = None
         self.common_name = None
+        self.start_year = None
+        self.end_year = None
 
         self.set_fields(**kwargs)
 
@@ -200,6 +202,12 @@ class Load(BaseObject):
                 for court in maps.NATURAL_COURT_CHOICES:
                     if court[0] == n.naturalcourt:
                         n.common_name = court[1]
+                n.start_year = int(n.common_name.split(":")[1].split(' - ')[0].strip())
+                try:
+                    n.end_year = int(n.common_name.split(":")[1].split(' - ')[1].strip())
+                except:
+                    n.end_year = None
+
                 self.naturalcourts.append(n)
                 processed_naturalcourts.append(row['naturalCourt'])
 
