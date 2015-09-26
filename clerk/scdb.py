@@ -68,6 +68,7 @@ class Vote(BaseObject):
         self.majvotes = None
         self.minvotes = None
         self.decisiondirection = None
+        self.nyt_weighted_majvotes = None
 
         self.set_fields(**kwargs)
 
@@ -186,7 +187,9 @@ class Load(BaseObject):
         processed_justices = []
 
         for row in rows:
-            self.votes.append(Vote(**row))
+            v = Vote(**row)
+            v = utils.set_weighted_majvotes(v)
+            self.votes.append(v)
 
             if row['docketId'] not in processed_cases:
                 m = MeritsCase(**row)
@@ -212,16 +215,6 @@ class Load(BaseObject):
                 self.naturalcourts.append(n)
                 processed_naturalcourts.append(row['naturalCourt'])
 
-    def write(self):
-        with open('%s/scdb_cases.json' % (self.DATA_DIRECTORY), 'w') as writefile:
-            writefile.write(json.dumps([c.__dict__ for c in self.cases]))
-
-        with open('%s/scdb_justices.json' % (self.DATA_DIRECTORY), 'w') as writefile:
-            writefile.write(json.dumps([j.__dict__ for j in self.justices]))
-
-        with open('%s/scdb_votes.json' % (self.DATA_DIRECTORY), 'w') as writefile:
-            writefile.write(json.dumps([v.__dict__ for v in self.votes]))
-
 
     def clean(self):
         os.system('rm -f %s/%s.*' % (self.DATA_DIRECTORY, self.SCDB_FILENAME))
@@ -232,7 +225,6 @@ if __name__ == "__main__":
 
     l.download()
     l.load()
-    l.write()
     l.clean()
 
     l.end = datetime.datetime.now()
