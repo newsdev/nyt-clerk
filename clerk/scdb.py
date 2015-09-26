@@ -50,6 +50,8 @@ class Vote(BaseObject):
         self.voteid = None
         self.term = None
         self.naturalcourt = None
+        self.majvotes = None
+        self.minvotes = None
 
         self.set_fields(**kwargs)
 
