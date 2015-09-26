@@ -33,6 +33,14 @@ class BaseObject(object):
     def __str__(self):
         return self.__unicode__()
 
+
+class NaturalCourt(BaseObject):
+    def __init__(self, **kwargs):
+        self.id = None
+
+        self.set_fields(**kwargs)
+
+
 class Vote(BaseObject):
 
     def __init__(self, **kwargs):
@@ -148,6 +156,7 @@ class Load(BaseObject):
         self.file_path = self.DATA_DIRECTORY + '/' + self.SCDB_FILENAME + '.csv'
         self.cases = []
         self.justices = []
+        self.naturalcourts = []
         self.votes = []
         self.start = datetime.datetime.now()
         self.set_data_directory()
@@ -165,6 +174,7 @@ class Load(BaseObject):
             rows = list(csv.DictReader(readfile))
 
         processed_cases = []
+        processed_naturalcourts = []
         processed_justices = []
 
         for row in rows:
@@ -179,6 +189,10 @@ class Load(BaseObject):
             if row['justice'] not in processed_justices:
                 self.justices.append(Justice(**row))
                 processed_justices.append(row['justice'])
+
+            if row['naturalcourt'] not in processed_naturalcourts:
+                self.naturalcourts.append(NaturalCourt(**row))
+                processed_naturalcourts.append(row['naturalcourt'])
 
     def write(self):
         with open('%s/scdb_cases.json' % (self.DATA_DIRECTORY), 'w') as writefile:
