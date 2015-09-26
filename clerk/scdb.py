@@ -190,9 +190,9 @@ class Load(BaseObject):
                 self.justices.append(Justice(**row))
                 processed_justices.append(row['justice'])
 
-            if row['naturalcourt'] not in processed_naturalcourts:
+            if row['naturalCourt'] not in processed_naturalcourts:
                 self.naturalcourts.append(NaturalCourt(**row))
-                processed_naturalcourts.append(row['naturalcourt'])
+                processed_naturalcourts.append(row['naturalCourt'])
 
     def write(self):
         with open('%s/scdb_cases.json' % (self.DATA_DIRECTORY), 'w') as writefile:
