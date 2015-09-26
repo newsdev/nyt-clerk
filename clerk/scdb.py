@@ -7,6 +7,7 @@ import os
 
 import requests
 
+from clerk import maps
 from clerk import utils
 
 
@@ -36,9 +37,13 @@ class BaseObject(object):
 
 class NaturalCourt(BaseObject):
     def __init__(self, **kwargs):
-        self.id = None
+        self.naturalcourt = None
+        self.common_name = None
 
         self.set_fields(**kwargs)
+
+        def __unicode__(self):
+            return self.common_name
 
 
 class Vote(BaseObject):
@@ -191,7 +196,11 @@ class Load(BaseObject):
                 processed_justices.append(row['justice'])
 
             if row['naturalCourt'] not in processed_naturalcourts:
-                self.naturalcourts.append(NaturalCourt(**row))
+                n = NaturalCourt(**row)
+                for court in maps.NATURAL_COURT_CHOICES:
+                    if court[0] = n.naturalcourt:
+                        n.common_name = court[1]
+                self.naturalcourts.append(n)
                 processed_naturalcourts.append(row['naturalCourt'])
 
     def write(self):
