@@ -67,6 +67,7 @@ class Vote(BaseObject):
         self.naturalcourt = None
         self.majvotes = None
         self.minvotes = None
+        self.decisiondirection = None
 
         self.set_fields(**kwargs)
 
