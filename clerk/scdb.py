@@ -198,7 +198,7 @@ class Load(BaseObject):
             if row['naturalCourt'] not in processed_naturalcourts:
                 n = NaturalCourt(**row)
                 for court in maps.NATURAL_COURT_CHOICES:
-                    if court[0] = n.naturalcourt:
+                    if court[0] == n.naturalcourt:
                         n.common_name = court[1]
                 self.naturalcourts.append(n)
                 processed_naturalcourts.append(row['naturalCourt'])
