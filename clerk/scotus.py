@@ -100,113 +100,129 @@ class Load(BaseObject):
     def parse_opinions(self):
         for term in self.OPINIONS_TERMS:
             soup = BeautifulSoup(self.opinions_html[str(term)], 'lxml')
-            rows = soup.select('center')[0].select('table')[0].select('tr')[1:]
+            try:
+                rows = soup.select('center')[0].select('table')[0].select('tr')[1:]
 
-            for row in rows:
-                case_dict = {}
-                cells = row.select('td')
-                case_dict['term'] = str(term)
-                case_dict['docket'] = cells[2].text.strip()
-                case_dict['short_name'] = cells[3].text.strip()
-                case_dict['opinion_pdf_url'] = 'http://www.supremecourt.gov' + cells[3].select('a')[0].attrs['href'].strip()
+                for row in rows:
+                    case_dict = {}
+                    cells = row.select('td')
+                    case_dict['term'] = str(term)
+                    case_dict['docket'] = cells[2].text.strip()
+                    case_dict['short_name'] = cells[3].text.strip()
+                    case_dict['opinion_pdf_url'] = 'http://www.supremecourt.gov' + cells[3].select('a')[0].attrs['href'].strip()
 
-                composite = case_dict['term'] + ' ' + case_dict['docket']
-                if not self.cases.get(composite, None):
-                    self.cases[composite] = {}
-                self.cases[composite].update(case_dict)
+                    composite = case_dict['term'] + ' ' + case_dict['docket']
+                    if not self.cases.get(composite, None):
+                        self.cases[composite] = {}
+                    self.cases[composite].update(case_dict)
+
+            except IndexError:
+                # No opinions for this term
+                pass
 
     def parse_audio(self):
         for term in self.AUDIO_TERMS:
-            soup = BeautifulSoup(self.audio_html[str(term)], 'lxml')
-            rows = soup.select('table.datatables')[0].select('tr')[1:]
+            try:
+                soup = BeautifulSoup(self.audio_html[str(term)], 'lxml')
+                rows = soup.select('table.datatables')[0].select('tr')[1:]
 
-            for row in rows:
+                for row in rows:
 
-                cells = row.select('td')
+                    cells = row.select('td')
 
-                try:
-                    case_dict = {}
-                    case_dict['term'] = str(term)
+                    try:
+                        case_dict = {}
+                        case_dict['term'] = str(term)
 
-                    # The oral audio page sometimes append text to the docket ID.
-                    possible_docket = cells[0].select('a')[0].text.strip()
+                        # The oral audio page sometimes append text to the docket ID.
+                        possible_docket = cells[0].select('a')[0].text.strip()
 
-                    #  14-556-Question-2, 11-398-Monday
-                    if "-" in possible_docket:
-                        case_dict['docket'] = possible_docket.split('-')[0].strip() + '-' + possible_docket.split('-')[1].strip()
+                        #  14-556-Question-2, 11-398-Monday
+                        if "-" in possible_docket:
+                            case_dict['docket'] = possible_docket.split('-')[0].strip() + '-' + possible_docket.split('-')[1].strip()
 
-                    # 10-1491 (Reargued)
-                    elif " " in possible_docket:
-                        case_dict['docket'] = possible_docket.split(' ')[0].strip()
+                        # 10-1491 (Reargued)
+                        elif " " in possible_docket:
+                            case_dict['docket'] = possible_docket.split(' ')[0].strip()
 
-                    else:
-                        case_dict['docket'] = possible_docket
+                        else:
+                            case_dict['docket'] = possible_docket
 
-                    detail_url = 'http://www.supremecourt.gov/oral_arguments' + cells[0].select('a')[0].attrs['href'].split('..')[1]
+                        detail_url = 'http://www.supremecourt.gov/oral_arguments' + cells[0].select('a')[0].attrs['href'].split('..')[1]
 
-                    detail_html = requests.get(detail_url).content
-                    soup = BeautifulSoup(detail_html, 'lxml')
+                        detail_html = requests.get(detail_url).content
+                        soup = BeautifulSoup(detail_html, 'lxml')
 
 
-                    case_dict['audio_mp3'] = []
-                    case_dict['audio_mp3'].append(soup.select('div.datafield > table')[0].select('tr')[0].select('td')[1].select('a')[0].attrs['href'])
+                        case_dict['audio_mp3'] = []
+                        case_dict['audio_mp3'].append(soup.select('div.datafield > table')[0].select('tr')[0].select('td')[1].select('a')[0].attrs['href'])
 
-                    composite = case_dict['term'] + ' ' + case_dict['docket']
-                    if not self.cases.get(composite, None):
-                        self.cases[composite] = {}
+                        composite = case_dict['term'] + ' ' + case_dict['docket']
+                        if not self.cases.get(composite, None):
+                            self.cases[composite] = {}
 
-                    # Deal with possibly multiple audio URLs.
-                    if self.cases[composite].get('audio_mp3', None):
-                        case_dict['audio_mp3'] = case_dict['audio_mp3'] + self.cases[composite]['audio_mp3']
+                        # Deal with possibly multiple audio URLs.
+                        if self.cases[composite].get('audio_mp3', None):
+                            case_dict['audio_mp3'] = case_dict['audio_mp3'] + self.cases[composite]['audio_mp3']
 
-                    self.cases[composite].update(case_dict)
+                        self.cases[composite].update(case_dict)
 
-                except IndexError:
-                    pass
+                    except IndexError:
+                        pass
+
+            except IndexError:
+                # No audio for this term.
+                pass
+
 
     def parse_arguments(self):
         for term in self.ARGUMENTS_TERMS:
-            soup = BeautifulSoup(self.arguments_html[str(term)], 'lxml')
-            rows = soup.select('table.datatables')[0].select('tr')[1:]
-            for row in rows:
+            try:
+                soup = BeautifulSoup(self.arguments_html[str(term)], 'lxml')
+                rows = soup.select('table.datatables')[0].select('tr')[1:]
+                for row in rows:
 
-                cells = row.select('td')
+                    cells = row.select('td')
 
-                try:
-                    case_dict = {}
-                    case_dict['term'] = str(term)
+                    try:
+                        case_dict = {}
+                        case_dict['term'] = str(term)
 
-                    # The arguments sometimes append text to the docket ID.
-                    possible_docket = cells[0].select('a')[0].text.strip()
+                        # The arguments sometimes append text to the docket ID.
+                        possible_docket = cells[0].select('a')[0].text.strip()
 
-                    case_dict['docket'] = possible_docket
+                        case_dict['docket'] = possible_docket
 
-                    #  14-556-Question-2, 11-398-Monday
-                    if "-" in possible_docket:
-                        case_dict['docket'] = possible_docket.split('-')[0].strip() + '-' + possible_docket.split('-')[1].strip()
+                        #  14-556-Question-2, 11-398-Monday
+                        if "-" in possible_docket:
+                            case_dict['docket'] = possible_docket.split('-')[0].strip() + '-' + possible_docket.split('-')[1].strip()
 
-                    # 10-1491 (Reargued)
-                    if " " in possible_docket:
-                        case_dict['docket'] = possible_docket.split(' ')[0].strip()
+                        # 10-1491 (Reargued)
+                        if " " in possible_docket:
+                            case_dict['docket'] = possible_docket.split(' ')[0].strip()
 
-                    if "." in possible_docket:
-                        case_dict['docket'] = possible_docket.replace('.', '')
+                        if "." in possible_docket:
+                            case_dict['docket'] = possible_docket.replace('.', '')
 
-                    case_dict['argument_pdf'] = []
-                    case_dict['argument_pdf'].append('http://www.supremecourt.gov/oral_arguments' + cells[0].select('a')[0]['href'].split('..')[1])
+                        case_dict['argument_pdf'] = []
+                        case_dict['argument_pdf'].append('http://www.supremecourt.gov/oral_arguments' + cells[0].select('a')[0]['href'].split('..')[1])
 
-                    composite = case_dict['term'] + ' ' + case_dict['docket']
-                    if not self.cases.get(composite, None):
-                        self.cases[composite] = {}
+                        composite = case_dict['term'] + ' ' + case_dict['docket']
+                        if not self.cases.get(composite, None):
+                            self.cases[composite] = {}
 
-                    # Deal with possibly multiple argument_pdf URLs.
-                    if self.cases[composite].get('argument_pdf', None):
-                        case_dict['argument_pdf'] = case_dict['argument_pdf'] + self.cases[composite]['argument_pdf']
+                        # Deal with possibly multiple argument_pdf URLs.
+                        if self.cases[composite].get('argument_pdf', None):
+                            case_dict['argument_pdf'] = case_dict['argument_pdf'] + self.cases[composite]['argument_pdf']
 
-                    self.cases[composite].update(case_dict)
+                        self.cases[composite].update(case_dict)
 
-                except IndexError:
-                    pass
+                    except IndexError:
+                        pass
+
+            except IndexError:
+                # No arguments for this term.
+                pass
 
     def write(self):
         with open('%s/scotus_cases.json' % (self.DATA_DIRECTORY), 'w') as writefile:
