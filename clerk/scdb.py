@@ -55,6 +55,7 @@ class Vote(BaseObject):
         self.justicename = None
         self.caseid = None
         self.docketid = None
+        self.caseissuesid = None
         self.casename = None
         self.vote = None
         self.opinion = None
@@ -69,6 +70,10 @@ class Vote(BaseObject):
         self.minvotes = None
         self.decisiondirection = None
         self.nyt_weighted_majvotes = None
+        self.decisiontype = None
+        self.majvotes = None
+        self.minvotes = None
+        self.datedecision = None
 
         self.set_fields(**kwargs)
 
