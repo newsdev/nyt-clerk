@@ -12,7 +12,7 @@ from clerk import utils
 
 
 class BaseObject(object):
-    SCDB_URL = 'http://scdb.wustl.edu/_brickFiles/2015_01/SCDB_2015_01_justiceCentered_Citation.csv.zip'
+    SCDB_URL = 'http://scdb.wustl.edu/_brickFiles/Legacy_01/SCDB_Legacy_01_justiceCentered_Citation.csv.zip'
     SCDB_FILENAME = SCDB_URL.split('/')[-1].split('.')[0]
     DATA_DIRECTORY = os.path.join(os.path.realpath(__file__).split(__file__.split('/')[-1])[0], 'data')
 
@@ -71,8 +71,6 @@ class Vote(BaseObject):
         self.decisiondirection = None
         self.nyt_weighted_majvotes = None
         self.decisiontype = None
-        self.majvotes = None
-        self.minvotes = None
         self.datedecision = None
 
         self.set_fields(**kwargs)

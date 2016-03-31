@@ -3,3 +3,4 @@ clerk/data/
 *.pyo
 dist/
 nyt_clerk.egg-info/
+build/
