@@ -1,4 +1,4 @@
-import csv
+from csvkit.py2 import CSVKitWriter
 import sys
 from cement.core import handler, output
 
@@ -19,7 +19,7 @@ class CSVOutputHandler(output.CementOutputHandler):
             return
 
         try:
-            writer = csv.writer(sys.stdout)
+            writer = CSVKitWriter(sys.stdout)
             for i, row in enumerate(data):
                 if i == 0:
                     writer.writerow(row.serialize().keys())

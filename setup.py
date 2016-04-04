@@ -26,7 +26,7 @@ setup(
     },
     license="Apache License 2.0",
     keywords='SCOTUS data parsing scraping legal law court',
-    install_requires=['beautifulsoup4','html5lib','lxml','requests','nameparser==0.3.10'],
+    install_requires=['beautifulsoup4','html5lib','lxml','requests','nameparser','csvkit'],
     classifiers=['Development Status :: 3 - Alpha',
                  'Intended Audience :: Developers',
                  'Programming Language :: Python',
