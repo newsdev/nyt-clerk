@@ -4,7 +4,6 @@ import pkg_resources
 
 from clerk import scdb
 from clerk import scores
-from clerk import scotus
 
 from clint.textui import puts, colored
 from cement.core.foundation import CementApp
