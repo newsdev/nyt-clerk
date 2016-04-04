@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from collections import OrderedDict
 import csv
 import datetime
 import json
@@ -11,227 +12,310 @@ from clerk import maps
 from clerk import utils
 
 
-class BaseObject(object):
-    SCDB_URL = 'http://scdb.wustl.edu/_brickFiles/Legacy_01/SCDB_Legacy_01_justiceCentered_Citation.csv.zip'
-    SCDB_FILENAME = SCDB_URL.split('/')[-1].split('.')[0]
-    DATA_DIRECTORY = os.path.join(os.path.realpath(__file__).split(__file__.split('/')[-1])[0], 'data')
-
-    def set_data_directory(self):
-        if not os.path.exists(self.DATA_DIRECTORY):
-            os.system('mkdir -p %s' % self.DATA_DIRECTORY)
-
-    def set_fields(self, **kwargs):
-        fieldnames = self.__dict__.keys()
-        for k,v in kwargs.items():
-            k = k.lower().strip()
-            v = unicode(v.decode('latin-1'))
-            if k in fieldnames:
-                setattr(self, k, v)
-
-    def __repr__(self):
-        return self.__unicode__()
-
-    def __str__(self):
-        return self.__unicode__()
-
-
-class NaturalCourt(BaseObject):
-    def __init__(self, **kwargs):
-        self.naturalcourt = None
-        self.common_name = None
-        self.start_date = None
-        self.end_date = None
-
-        self.set_fields(**kwargs)
-
-        def __unicode__(self):
-            return self.common_name
-
-
-class Vote(BaseObject):
+class Case(object):
 
     def __init__(self, **kwargs):
-        self.justice = None
-        self.justicename = None
-        self.caseid = None
-        self.docketid = None
-        self.caseissuesid = None
-        self.casename = None
-        self.vote = None
-        self.opinion = None
-        self.direction = None
-        self.majority = None
-        self.firstagreement = None
-        self.secondagreement = None
-        self.voteid = None
-        self.term = None
-        self.naturalcourt = None
-        self.majvotes = None
-        self.minvotes = None
-        self.decisiondirection = None
-        self.nyt_weighted_majvotes = None
-        self.decisiontype = None
-        self.datedecision = None
+        self.caseid = kwargs.get('caseId', None)
+        self.docketid = kwargs.get('docketId', None)
+        self.caseissuesid = kwargs.get('caseIssuesId', None)
+        self.voteid = kwargs.get('voteId', None)
+        self.datedecision = kwargs.get('dateDecision', None)
+        self.decisiontype = kwargs.get('decisionType', None)
+        self.uscite = kwargs.get('usCite', None)
+        self.sctcite = kwargs.get('sctCite', None)
+        self.ledcite = kwargs.get('ledCite', None)
+        self.lexiscite = kwargs.get('lexisCite', None)
+        self.term = kwargs.get('term', None)
+        self.naturalcourt = kwargs.get('naturalCourt', None)
+        self.chief = kwargs.get('chief', None)
+        self.docket = kwargs.get('docket', None)
+        self.casename = kwargs.get('caseName', None)
+        self.dateargument = kwargs.get('dateArgument', None)
+        self.datereargument = kwargs.get('dateRearg', None)
+        self.petitioner = kwargs.get('petitioner', None)
+        self.petitionerstate = kwargs.get('petitionerState', None)
+        self.respondent = kwargs.get('respondent', None)
+        self.respondentstate = kwargs.get('respondentState', None)
+        self.jurisdiction = kwargs.get('jurisdiction', None)
+        self.adminaction = kwargs.get('adminAction', None)
+        self.adminactionstate = kwargs.get('adminActionState', None)
+        self.threejudgefdc = kwargs.get('threeJudgeFdc', None)
+        self.caseorigin = kwargs.get('caseOrigin', None)
+        self.caseoriginstate = kwargs.get('caseOriginState', None)
+        self.casesource = kwargs.get('caseSource', None)
+        self.casesourcestate = kwargs.get('caseSourceState', None)
+        self.lcdisagreement = kwargs.get('lcDisagreement', None)
+        self.certreason = kwargs.get('certReason', None)
+        self.lcdisposition = kwargs.get('lcDisposition', None)
+        self.lcdispositiondirection = kwargs.get('lcDispositionDirection', None)
+        self.declarationuncon = kwargs.get('declarationUncon', None)
+        self.casedisposition = kwargs.get('caseDisposition', None)
+        self.casedispositionunusual = kwargs.get('caseDispositionUnusual', None)
+        self.partywinning = kwargs.get('partyWinning', None)
+        self.precedentalteration = kwargs.get('precedentAlteration', None)
+        self.voteunclear = kwargs.get('voteUnclear', None)
+        self.issue = kwargs.get('issue', None)
+        self.issuearea = kwargs.get('issueArea', None)
+        self.decisiondirection = kwargs.get('decisionDirection', None)
+        self.decisiondirectiondissent = kwargs.get('decisionDirectionDissent', None)
+        self.authoritydecision1 = kwargs.get('authorityDecision1', None)
+        self.authoritydecision2 = kwargs.get('authorityDecision2', None)
+        self.lawtype = kwargs.get('lawType', None)
+        self.lawsupp = kwargs.get('lawSupp', None)
+        self.lawminor = kwargs.get('lawMinor', None)
+        self.majopinwriter = kwargs.get('majOpinWriter', None)
+        self.majopinassigner = kwargs.get('majOpinAssigner', None)
+        self.splitvote = kwargs.get('splitVote', None)
+        self.majvotes = kwargs.get('majVotes', None)
+        self.minvotes = kwargs.get('minVotes', None)
 
-        self.set_fields(**kwargs)
+    def __unicode__(self):
+        return "%s" % self.case
+
+    def serialize(self):
+        return OrderedDict((
+            ('caseid', self.caseid),
+            ('docketid', self.docketid),
+            ('caseissuesid', self.caseissuesid),
+            ('voteid', self.voteid),
+            ('datedecision', self.datedecision),
+            ('decisiontype', self.decisiontype),
+            ('uscite', self.uscite),
+            ('sctcite', self.sctcite),
+            ('ledcite', self.ledcite),
+            ('lexiscite', self.lexiscite),
+            ('term', self.term),
+            ('naturalcourt', self.naturalcourt),
+            ('chief', self.chief),
+            ('docket', self.docket),
+            ('casename', self.casename),
+            ('dateargument', self.dateargument),
+            ('datereargument', self.datereargument),
+            ('petitioner', self.petitioner),
+            ('petitionerstate', self.petitionerstate),
+            ('respondent', self.respondent),
+            ('respondentstate', self.respondentstate),
+            ('jurisdiction', self.jurisdiction),
+            ('adminaction', self.adminaction),
+            ('adminactionstate', self.adminactionstate),
+            ('threejudgefdc', self.threejudgefdc),
+            ('caseorigin', self.caseorigin),
+            ('caseoriginstate', self.caseoriginstate),
+            ('casesource', self.casesource),
+            ('casesourcestate', self.casesourcestate),
+            ('lcdisagreement', self.lcdisagreement),
+            ('certreason', self.certreason),
+            ('lcdisposition', self.lcdisposition),
+            ('lcdispositiondirection', self.lcdispositiondirection),
+            ('declarationuncon', self.declarationuncon),
+            ('casedisposition', self.casedisposition),
+            ('casedispositionunusual', self.casedispositionunusual),
+            ('partywinning', self.partywinning),
+            ('precedentalteration', self.precedentalteration),
+            ('voteunclear', self.voteunclear),
+            ('issue', self.issue),
+            ('issuearea', self.issuearea),
+            ('decisiondirection', self.decisiondirection),
+            ('decisiondirectiondissent', self.decisiondirectiondissent),
+            ('authoritydecision1', self.authoritydecision1),
+            ('authoritydecision2', self.authoritydecision2),
+            ('lawtype', self.lawtype),
+            ('lawsupp', self.lawsupp),
+            ('lawminor', self.lawminor),
+            ('majopinwriter', self.majopinwriter),
+            ('majopinassigner', self.majopinassigner),
+            ('splitvote', self.splitvote),
+            ('majvotes', self.majvotes),
+            ('minvotes', self.minvotes),
+        ))
+
+class Vote(object):
+
+    def __init__(self, **kwargs):
+        self.caseid = kwargs['caseId']
+        self.docketid = kwargs['docketId']
+        self.caseissuesid = kwargs['caseIssuesId']
+        self.voteid = kwargs['voteId']
+        self.datedecision = kwargs['dateDecision']
+        self.decisiontype = kwargs['decisionType']
+        self.uscite = kwargs['usCite']
+        self.sctcite = kwargs['sctCite']
+        self.ledcite = kwargs['ledCite']
+        self.lexiscite = kwargs['lexisCite']
+        self.term = kwargs['term']
+        self.naturalcourt = kwargs['naturalCourt']
+        self.chief = kwargs['chief']
+        self.docket = kwargs['docket']
+        self.casename = kwargs['caseName']
+        self.dateargument = kwargs['dateArgument']
+        self.datereargument = kwargs['dateRearg']
+        self.petitioner = kwargs['petitioner']
+        self.petitionerstate = kwargs['petitionerState']
+        self.respondent = kwargs['respondent']
+        self.respondentstate = kwargs['respondentState']
+        self.jurisdiction = kwargs['jurisdiction']
+        self.adminaction = kwargs['adminAction']
+        self.adminactionstate = kwargs['adminActionState']
+        self.threejudgefdc = kwargs['threeJudgeFdc']
+        self.caseorigin = kwargs['caseOrigin']
+        self.caseoriginstate = kwargs['caseOriginState']
+        self.casesource = kwargs['caseSource']
+        self.casesourcestate = kwargs['caseSourceState']
+        self.lcdisagreement = kwargs['lcDisagreement']
+        self.certreason = kwargs['certReason']
+        self.lcdisposition = kwargs['lcDisposition']
+        self.lcdispositiondirection = kwargs['lcDispositionDirection']
+        self.declarationuncon = kwargs['declarationUncon']
+        self.casedisposition = kwargs['caseDisposition']
+        self.casedispositionunusual = kwargs['caseDispositionUnusual']
+        self.partywinning = kwargs['partyWinning']
+        self.precedentalteration = kwargs['precedentAlteration']
+        self.voteunclear = kwargs['voteUnclear']
+        self.issue = kwargs['issue']
+        self.issuearea = kwargs['issueArea']
+        self.decisiondirection = kwargs['decisionDirection']
+        self.decisiondirectiondissent = kwargs['decisionDirectionDissent']
+        self.authoritydecision1 = kwargs['authorityDecision1']
+        self.authoritydecision2 = kwargs['authorityDecision2']
+        self.lawtype = kwargs['lawType']
+        self.lawsupp = kwargs['lawSupp']
+        self.lawminor = kwargs['lawMinor']
+        self.majopinwriter = kwargs['majOpinWriter']
+        self.majopinassigner = kwargs['majOpinAssigner']
+        self.splitvote = kwargs['splitVote']
+        self.majvotes = kwargs['majVotes']
+        self.minvotes = kwargs['minVotes']
+        self.justice = kwargs['justice']
+        self.justicename = kwargs['justiceName']
+        self.vote = kwargs['vote']
+        self.opinion = kwargs['opinion']
+        self.direction = kwargs['direction']
+        self.majority = kwargs['majority']
+        self.firstagreement = kwargs['firstAgreement']
+        self.secondagreement = kwargs['secondAgreement']
 
     def __unicode__(self):
         return "%s, %s" % (self.justice, self.case)
 
+    def serialize(self):
+        return OrderedDict((
+            ('caseid', self.caseid),
+            ('docketid', self.docketid),
+            ('caseissuesid', self.caseissuesid),
+            ('voteid', self.voteid),
+            ('datedecision', self.datedecision),
+            ('decisiontype', self.decisiontype),
+            ('uscite', self.uscite),
+            ('sctcite', self.sctcite),
+            ('ledcite', self.ledcite),
+            ('lexiscite', self.lexiscite),
+            ('term', self.term),
+            ('naturalcourt', self.naturalcourt),
+            ('chief', self.chief),
+            ('docket', self.docket),
+            ('casename', self.casename),
+            ('dateargument', self.dateargument),
+            ('datereargument', self.datereargument),
+            ('petitioner', self.petitioner),
+            ('petitionerstate', self.petitionerstate),
+            ('respondent', self.respondent),
+            ('respondentstate', self.respondentstate),
+            ('jurisdiction', self.jurisdiction),
+            ('adminaction', self.adminaction),
+            ('adminactionstate', self.adminactionstate),
+            ('threejudgefdc', self.threejudgefdc),
+            ('caseorigin', self.caseorigin),
+            ('caseoriginstate', self.caseoriginstate),
+            ('casesource', self.casesource),
+            ('casesourcestate', self.casesourcestate),
+            ('lcdisagreement', self.lcdisagreement),
+            ('certreason', self.certreason),
+            ('lcdisposition', self.lcdisposition),
+            ('lcdispositiondirection', self.lcdispositiondirection),
+            ('declarationuncon', self.declarationuncon),
+            ('casedisposition', self.casedisposition),
+            ('casedispositionunusual', self.casedispositionunusual),
+            ('partywinning', self.partywinning),
+            ('precedentalteration', self.precedentalteration),
+            ('voteunclear', self.voteunclear),
+            ('issue', self.issue),
+            ('issuearea', self.issuearea),
+            ('decisiondirection', self.decisiondirection),
+            ('decisiondirectiondissent', self.decisiondirectiondissent),
+            ('authoritydecision1', self.authoritydecision1),
+            ('authoritydecision2', self.authoritydecision2),
+            ('lawtype', self.lawtype),
+            ('lawsupp', self.lawsupp),
+            ('lawminor', self.lawminor),
+            ('majopinwriter', self.majopinwriter),
+            ('majopinassigner', self.majopinassigner),
+            ('splitvote', self.splitvote),
+            ('majvotes', self.majvotes),
+            ('minvotes', self.minvotes),
+            ('justice', self.justice),
+            ('justicename', self.justicename),
+            ('vote', self.vote),
+            ('opinion', self.opinion),
+            ('direction', self.direction),
+            ('majority', self.majority),
+            ('firstagreement', self.firstagreement),
+            ('secondagreement', self.secondagreement),
+        ))
 
-class Justice(BaseObject):
 
-    def __init__(self, **kwargs):
-        self.justice = None
-        self.justicename = None
-        self.current = False
-        self.first_name = None
-        self.last_name = None
-        self.active_terms = None
-        self.nominated = None
-        self.confirmed = None
-        self.sworn_in = None
-        self.was_chief = False
-        self.first_term = None
-        self.last_term = None
-
-        self.set_fields(**kwargs)
-
-    def __unicode__(self):
-        return self.justicename
-
-class MeritsCase(BaseObject):
-
-    def __init__(self, **kwargs):
-        self.term = None
-        self.docket = None
-        self.caseid = None
-        self.docketid = None
-        self.caseissuesid = None
-        self.uscite = None
-        self.sctcite = None
-        self.ledcite = None
-        self.lexiscite = None
-        self.chief = None
-        self.casename = None
-        self.lawminor = None
-        self.majopinwriter = None
-        self.majopinassigner = None
-        self.majvotes = None
-        self.minvotes = None
-        self.datedecision = None
-        self.dateargument = None
-        self.daterearg = None
-        self.decisiontype = None
-        self.naturalcourt = None
-        self.petitioner = None
-        self.petitionerstate = None
-        self.respondent = None
-        self.respondentstate = None
-        self.jurisdiction = None
-        self.adminaction = None
-        self.adminactionstate = None
-        self.threejudgefdc = None
-        self.caseorigin = None
-        self.caseoriginstate = None
-        self.casesource = None
-        self.casesourcestate = None
-        self.certreason = None
-        self.lcdisagreement = None
-        self.lcdisposition = None
-        self.lcdispositiondirection = None
-        self.lcdecisiondirection = None
-        self.declarationuncon = None
-        self.casedisposition = None
-        self.casedispositionunusual = None
-        self.partywinning = None
-        self.precedentalteration = None
-        self.voteunclear = None
-        self.issue = None
-        self.issuearea = None
-        self.decisiondirection = None
-        self.decisiondirectiondissent = None
-        self.authoritydecision1 = None
-        self.authoritydecision2 = None
-        self.lawtype = None
-        self.lawsupp = None
-        self.splitvote = None
-
-        self.set_fields(**kwargs)
-
-    def __unicode__(self):
-        return "(%s) %s" % (self.term, self.casename)
-
-class Load(BaseObject):
+class Load(object):
+    DATA_MAP = {
+       'votes': {
+            'url': 'http://scdb.wustl.edu/_brickFiles/Legacy_01/SCDB_Legacy_01_justiceCentered_Citation.csv.zip',
+            'filename': 'SCDB_Legacy_01_justiceCentered_Citation'
+        },
+        'cases': {
+            'url': 'http://scdb.wustl.edu/_brickFiles/Legacy_01/SCDB_Legacy_01_caseCentered_Citation.csv.zip',
+            'filename': 'SCDB_Legacy_01_caseCentered_Citation'
+        }
+    }
 
     def __init__(self, **kwargs):
-        self.file_path = self.DATA_DIRECTORY + '/' + self.SCDB_FILENAME + '.csv'
-        self.cases = []
-        self.justices = []
-        self.naturalcourts = []
+        self.data_directory = kwargs.get('data_directory', '/tmp')
         self.votes = []
-        self.start = datetime.datetime.now()
-        self.set_data_directory()
+        self.cases = []
 
     def download(self):
-        r = requests.get(self.SCDB_URL)
+        for data_type in ['votes', 'cases']:
+            file_path = '%s/%s.csv.zip' % (
+                self.data_directory,
+                self.DATA_MAP[data_type]['filename']
+            )
+            if not os.path.isfile(file_path):
+                r = requests.get(self.DATA_MAP[data_type]['url'])
+                with open(file_path, 'w') as writefile:
+                    writefile.write(r.content)
 
-        with open('%s/%s.csv.zip' % (self.DATA_DIRECTORY, self.SCDB_FILENAME), 'w') as writefile:
-            writefile.write(r.content)
+    def unzip(self):
+        for data_type in ['votes', 'cases']:
+            file_path = '%s/%s.csv' % (
+                self.data_directory,
+                self.DATA_MAP[data_type]['filename']
+            )
+            if not os.path.isfile(file_path):
+                os.system('unzip %s -d %s' % (file_path, self.data_directory))
 
-        os.system('unzip %s/%s.csv.zip -d %s' % (self.DATA_DIRECTORY, self.SCDB_FILENAME, self.DATA_DIRECTORY))
-
-    def load(self):
-        with open(self.file_path, 'rU') as readfile:
-            rows = list(csv.DictReader(readfile))
-
-        processed_cases = []
-        processed_naturalcourts = []
-        processed_justices = []
-
-        for row in rows:
-            v = Vote(**row)
-            v = utils.set_weighted_majvotes(v)
-            self.votes.append(v)
-
-            if row['docketId'] not in processed_cases:
-                m = MeritsCase(**row)
-                m = utils.set_weighted_majvotes(m)
-                self.cases.append(m)
-                processed_cases.append(row['docketId'])
-
-            if row['justice'] not in processed_justices:
-                self.justices.append(Justice(**row))
-                processed_justices.append(row['justice'])
-
-            if row['naturalCourt'] not in processed_naturalcourts:
-                n = NaturalCourt(**row)
-                for court in maps.NATURAL_COURT_CHOICES:
-                    if court[0] == n.naturalcourt:
-                        n.common_name = court[1]
-                n.start_date = n.common_name.split(":")[1].split(' - ')[0].strip()
-                try:
-                    n.end_date = n.common_name.split(":")[1].split(' - ')[1].strip()
-                except:
-                    n.end_date = None
-
-                self.naturalcourts.append(n)
-                processed_naturalcourts.append(row['naturalCourt'])
-
+    def load(self, data_type):
+            file_path = '%s/%s.csv' % (
+                self.data_directory,
+                self.DATA_MAP[data_type]['filename']
+            )
+            if os.path.isfile(file_path):
+                with open(file_path, 'rU') as readfile:
+                    if data_type == 'votes':
+                        self.votes = list([
+                            Vote(**r) for r in csv.DictReader(readfile)
+                        ])
+                    if data_type == 'cases':
+                        self.cases = list([
+                            Case(**r) for r in csv.DictReader(readfile)
+                        ])
 
     def clean(self):
-        os.system('rm -f %s/%s.*' % (self.DATA_DIRECTORY, self.SCDB_FILENAME))
-
-if __name__ == "__main__":
-    l = Load()
-    print l.start
-
-    l.download()
-    l.load()
-    l.clean()
-
-    l.end = datetime.datetime.now()
-    print l.end
-
-    l.duration = l.end - l.start
-    print "Took %s" % l.duration
+        os.system('rm -f %s/SCDB_Legacy_01_*Centered_Citation.csv.zip' %
+            self.data_directory)

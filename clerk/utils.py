@@ -6,14 +6,17 @@ def current_term():
 
 def set_weighted_majvotes(obj):
     def weight_majvotes(obj):
-        if ((int(obj.majvotes) + int(obj.minvotes)) < 9):
-            """
-            We assume missing justices voted with the majority.
-            4 minority votes = 0 weighted votes.
-            """
-            WEIGHTED_VOTES = (9,8,7,6,0)
-            return WEIGHTED_VOTES[int(obj.minvotes)]
-        return int(obj.majvotes)
+        try:
+            if ((int(obj.majvotes) + int(obj.minvotes)) < 9):
+                """
+                We assume missing justices voted with the majority.
+                4 minority votes = 0 weighted votes.
+                """
+                WEIGHTED_VOTES = (9,8,7,6,0)
+                return WEIGHTED_VOTES[int(obj.minvotes)]
+            return int(obj.majvotes)
+        except ValueError:
+            return obj
 
     if obj.decisiondirection == "1":
         obj.nyt_weighted_majvotes = weight_majvotes(obj)

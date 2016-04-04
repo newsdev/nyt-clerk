@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from collections import OrderedDict
 import csv
 import datetime
 import json
@@ -11,148 +12,224 @@ import requests
 from clerk import utils
 
 
-class BaseObject(object):
-
-    def set_data_directory(self):
-        if not os.path.exists(self.DATA_DIRECTORY):
-            os.system('mkdir -p %s' % self.DATA_DIRECTORY)
-
-    def set_fields(self, **kwargs):
-        fieldnames = self.__dict__.keys()
-        for k,v in kwargs.items():
-            k = k.lower().strip()
-            v = unicode(v.decode('utf-8'))
-            if k in fieldnames:
-                setattr(self, k, v)
-
-    def __repr__(self):
-        return self.__unicode__()
-
-    def __str__(self):
-        return self.__unicode__()
-
-
-class CourtTerm(BaseObject):
+class CourtTerm(object):
 
     def __init__(self, **kwargs):
-        self.term = None
-        self.martin_quinn_score = None
-
-        self.set_fields(**kwargs)
+        self.term = kwargs.get('term', None)
+        self.med = kwargs.get('med', None)
+        self.med_sd = kwargs.get('med_sd', None)
+        self.min = kwargs.get('min', None)
+        self.max = kwargs.get('max', None)
+        self.justice = kwargs.get('justice', None)
+        self.just_pr = kwargs.get('just_pr', None)
+        self.harlan = kwargs.get('Harlan', None)
+        self.black = kwargs.get('Black', None)
+        self.douglas = kwargs.get('Douglas', None)
+        self.stewart = kwargs.get('Stewart', None)
+        self.marshall = kwargs.get('Marshall', None)
+        self.brennan = kwargs.get('Brennan', None)
+        self.white = kwargs.get('White', None)
+        self.warren = kwargs.get('Warren', None)
+        self.clark = kwargs.get('Clark', None)
+        self.frankfurter = kwargs.get('Frankfurter', None)
+        self.whittaker = kwargs.get('Whittaker', None)
+        self.burton = kwargs.get('Burton', None)
+        self.reed = kwargs.get('Reed', None)
+        self.fortas = kwargs.get('Fortas', None)
+        self.goldberg = kwargs.get('Goldberg', None)
+        self.minton = kwargs.get('Minton', None)
+        self.jackson = kwargs.get('Jackson', None)
+        self.burger = kwargs.get('Burger', None)
+        self.blackmun = kwargs.get('Blackmun', None)
+        self.powell = kwargs.get('Powell', None)
+        self.rehnquist = kwargs.get('Rehnquist', None)
+        self.stevens = kwargs.get('Stevens', None)
+        self.oconnor = kwargs.get('OConnor', None)
+        self.scalia = kwargs.get('Scalia', None)
+        self.kennedy = kwargs.get('Kennedy', None)
+        self.souter = kwargs.get('Souter', None)
+        self.thomas = kwargs.get('Thomas', None)
+        self.ginsburg = kwargs.get('Ginsburg', None)
+        self.breyer = kwargs.get('Breyer', None)
+        self.rutledge = kwargs.get('Rutledge', None)
+        self.murphy = kwargs.get('Murphy', None)
+        self.vinson = kwargs.get('Vinson', None)
+        self.byrnes = kwargs.get('Byrnes', None)
+        self.sutherland = kwargs.get('Sutherland', None)
+        self.cardozo = kwargs.get('Cardozo', None)
+        self.brandeis = kwargs.get('Brandeis', None)
+        self.butler = kwargs.get('Butler', None)
+        self.mcreynolds = kwargs.get('McReynolds', None)
+        self.hughes = kwargs.get('Hughes', None)
+        self.oroberts = kwargs.get('ORoberts', None)
+        self.stone = kwargs.get('Stone', None)
+        self.roberts = kwargs.get('Roberts', None)
+        self.alito = kwargs.get('Alito', None)
+        self.sotomayor = kwargs.get('Sotomayor', None)
+        self.kagan = kwargs.get('Kagan', None)
 
     def __unicode__(self):
         return "%s" % (self.term)
 
+    def serialize(self):
+        return OrderedDict((
+            ('term', self.term),
+            ('med', self.med),
+            ('med_sd', self.med_sd),
+            ('min', self.min),
+            ('max', self.max),
+            ('justice', self.justice),
+            ('just_pr', self.just_pr),
+            ('harlan', self.harlan),
+            ('black', self.black),
+            ('douglas', self.douglas),
+            ('stewart', self.stewart),
+            ('marshall', self.marshall),
+            ('brennan', self.brennan),
+            ('white', self.white),
+            ('warren', self.warren),
+            ('clark', self.clark),
+            ('frankfurter', self.frankfurter),
+            ('whittaker', self.whittaker),
+            ('burton', self.burton),
+            ('reed', self.reed),
+            ('fortas', self.fortas),
+            ('goldberg', self.goldberg),
+            ('minton', self.minton),
+            ('jackson', self.jackson),
+            ('burger', self.burger),
+            ('blackmun', self.blackmun),
+            ('powell', self.powell),
+            ('rehnquist', self.rehnquist),
+            ('stevens', self.stevens),
+            ('oconnor', self.oconnor),
+            ('scalia', self.scalia),
+            ('kennedy', self.kennedy),
+            ('souter', self.souter),
+            ('thomas', self.thomas),
+            ('ginsburg', self.ginsburg),
+            ('breyer', self.breyer),
+            ('rutledge', self.rutledge),
+            ('murphy', self.murphy),
+            ('vinson', self.vinson),
+            ('byrnes', self.byrnes),
+            ('sutherland', self.sutherland),
+            ('cardozo', self.cardozo),
+            ('brandeis', self.brandeis),
+            ('butler', self.butler),
+            ('mcreynolds', self.mcreynolds),
+            ('hughes', self.hughes),
+            ('oroberts', self.oroberts),
+            ('stone', self.stone),
+            ('roberts', self.roberts),
+            ('alito', self.alito),
+            ('sotomayor', self.sotomayor),
+            ('kagan', self.kagan),
+        ))
 
-class JusticeTerm(BaseObject):
+class JusticeTerm(object):
 
     def __init__(self, **kwargs):
-        self.justice = None
-        self.term = None
-        self.martin_quinn_score = None
-
-        self.set_fields(**kwargs)
+        self.term = kwargs.get('term', None)
+        self.justice = kwargs.get('justice', None)
+        self.justicename = kwargs.get('justiceName', None)
+        self.code = kwargs.get('code', None)
+        self.post_mn = kwargs.get('post_mn', None)
+        self.post_sd = kwargs.get('post_sd', None)
+        self.post_med = kwargs.get('post_med', None)
+        self.post_025 = kwargs.get('post_025', None)
+        self.post_975 = kwargs.get('post_975', None)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.justice, self.term)
+        return "%s" % (self.justicename, self.term)
+
+    def serialize(self):
+        return OrderedDict((
+            ('term', self.term),
+            ('justice', self.justice),
+            ('justicename', self.justicename),
+            ('code', self.code),
+            ('post_mn', self.post_mn),
+            ('post_sd', self.post_sd),
+            ('post_med', self.post_med),
+            ('post_025', self.post_025),
+            ('post_975', self.post_975),
+        ))
 
 
-class Justice(BaseObject):
+class Justice(object):
 
     def __init__(self, **kwargs):
-        self.justice = None
-        self.full_name = None
-        self.first_name = None
-        self.last_name = None
-        self.segal_cover_ideology_score = None
-        self.segal_cover_qualification_score = None
-
-        self.set_fields(**kwargs)
+        self.justice = kwargs.get('justice', None)
+        self.full_name = kwargs.get('full_name', None)
+        self.chief_justice = kwargs.get('chief_justice', None)
+        self.confirmation_votes_for = kwargs.get('confirmation_votes_for', None)
+        self.confirmation_votes_against = kwargs.get('confirmation_votes_against', None)
+        self.qualifications_score = kwargs.get('qualifications_score', None)
+        self.ideology_score = kwargs.get('ideology_score', None)
 
     def __unicode__(self):
         return self.justice
 
+    def serialize(self):
+        return OrderedDict((
+            ('justice', self.justice),
+            ('full_name', self.full_name),
+            ('chief_justice', self.chief_justice),
+            ('confirmation_votes_for', self.confirmation_votes_for),
+            ('confirmation_votes_against', self.confirmation_votes_against),
+            ('qualifications_score', self.qualifications_score),
+            ('ideology_score', self.ideology_score),
+        ))
 
-class Load(BaseObject):
+class Load(object):
 
     def __init__(self, **kwargs):
         self.MQ_JUSTICES_URL = 'http://mqscores.berkeley.edu/media/2014/justices.csv'
         self.MQ_COURTS_URL = 'http://mqscores.berkeley.edu/media/2014/court.csv'
-        self.SC_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/0700af18dc3f0a14bf1a011d0cc2e24ebb36576d/segal_cover_scores.csv'
-        self.DATA_DIRECTORY = os.path.join(os.path.realpath(__file__).split(__file__.split('/')[-1])[0], 'data')
+        self.SC_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/12c06863f944515bbd3122ac7f0461219c424edd/segal_cover_scores.csv'
+        self.SCDB_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/12c06863f944515bbd3122ac7f0461219c424edd/scdb_justices.csv'
+        self.DATA_DIRECTORY = '/tmp'
 
         self.justices = []
-        self.courtterms = []
-        self.justiceterms = []
-        self.start = datetime.datetime.now()
-        self.set_data_directory()
+        self.courts = []
+        self.justice_terms = []
 
     def download(self):
-        for filename in [self.MQ_JUSTICES_URL, self.MQ_COURTS_URL, self.SC_JUSTICES_URL]:
+        for filename in [
+            self.MQ_JUSTICES_URL,
+            self.MQ_COURTS_URL,
+            self.SC_JUSTICES_URL,
+            self.SCDB_JUSTICES_URL
+        ]:
             r = requests.get(filename)
-            with open(self.DATA_DIRECTORY + '/' + filename.split('/')[-1], 'w') as writefile:
-                writefile.write(r.content)
+            filepath = self.DATA_DIRECTORY + '/' + filename.split('/')[-1]
+            if not os.path.isfile(filepath):
+                with open(filepath, 'w') as writefile:
+                    writefile.write(r.content)
 
-    def load(self):
-        with open(self.DATA_DIRECTORY + '/' + self.MQ_JUSTICES_URL.split('/')[-1], 'r') as readfile:
-            justice_terms = list(csv.DictReader(readfile))
+    def load(self, data_type):
+        if data_type == 'justice_terms':
+            with open(self.DATA_DIRECTORY + '/' + self.MQ_JUSTICES_URL.split('/')[-1], 'r') as readfile:
+                for score in csv.DictReader(readfile):
+                    self.justice_terms.append(JusticeTerm(**score))
 
-        for score in justice_terms:
-            score_dict = {}
-            score_dict['martin_quinn_score'] = score['post_mn']
-            score_dict['justice'] = score['justice']
-            score_dict['term'] = score['term']
-            self.justiceterms.append(JusticeTerm(**score_dict))
+        if data_type == 'justices':
+            with open(self.DATA_DIRECTORY + '/' + self.SC_JUSTICES_URL.split('/')[-1], 'r') as readfile:
+                for score in csv.DictReader(readfile):
+                    self.justices.append(Justice(**score))
 
-        with open(self.DATA_DIRECTORY + '/' + self.MQ_COURTS_URL.split('/')[-1], 'r') as readfile:
-            court_scores = list(csv.DictReader(readfile))
+        if data_type == 'courts':
+            with open(self.DATA_DIRECTORY + '/' + self.MQ_COURTS_URL.split('/')[-1], 'r') as readfile:
+                for score in csv.DictReader(readfile):
+                    self.courts.append(CourtTerm(**score))
 
-        for score in court_scores:
-            score_dict = {}
-            score_dict['term'] = score['term']
-            score_dict['martin_quinn_score'] = score['med']
-            score_dict['median_justice'] = score['justice']
-            self.courtterms.append(CourtTerm(**score_dict))
-
-        with open(self.DATA_DIRECTORY + '/' + self.SC_JUSTICES_URL.split('/')[-1], 'r') as readfile:
-            justice_scores = list(csv.DictReader(readfile))
-
-        for score in justice_scores:
-            if score['justice']:
-                score_dict = {}
-                score_dict['justice'] = score['justice']
-                score_dict['full_name'] = unicode(score['full_name'].decode('utf-8')).strip()
-                score_dict['last_name'] = HumanName(score_dict['full_name']).last
-                score_dict['first_name'] = HumanName(score_dict['full_name']).first
-                score_dict['segal_cover_ideology_score'] = score['ideology_score']
-                score_dict['segal_cover_qualification_score'] = score['qualifications_score']
-                self.justices.append(Justice(**score_dict))
-
-    def write(self):
-        with open('%s/scores_justiceterms.json' % (self.DATA_DIRECTORY), 'w') as writefile:
-            writefile.write(json.dumps([c.__dict__ for c in self.justiceterms]))
-
-        with open('%s/scores_justices.json' % (self.DATA_DIRECTORY), 'w') as writefile:
-            writefile.write(json.dumps([j.__dict__ for j in self.justices]))
-
-        with open('%s/scores_courtterms.json' % (self.DATA_DIRECTORY), 'w') as writefile:
-            writefile.write(json.dumps([v.__dict__ for v in self.courtterms]))
 
     def clean(self):
-        for filename in [self.MQ_JUSTICES_URL, self.MQ_COURTS_URL, self.SC_JUSTICES_URL]:
+        for filename in [
+            self.MQ_JUSTICES_URL,
+            self.MQ_COURTS_URL,
+            self.SC_JUSTICES_URL,
+            self.SCDB_JUSTICES_URL
+        ]:
             os.system('rm -f %s/%s' % (self.DATA_DIRECTORY, filename.split('/')[-1]))
-
-if __name__ == "__main__":
-    l = Load()
-    print l.start
-
-    l.download()
-    l.load()
-    l.write()
-    l.clean()
-
-    l.end = datetime.datetime.now()
-    print l.end
-
-    l.duration = l.end - l.start
-    print "Took %s" % l.duration
