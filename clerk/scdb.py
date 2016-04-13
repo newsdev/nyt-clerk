@@ -18,7 +18,6 @@ class Case(object):
         self.caseid = kwargs.get('caseId', None).decode('latin-1')
         self.docketid = kwargs.get('docketId', None).decode('latin-1')
         self.caseissuesid = kwargs.get('caseIssuesId', None).decode('latin-1')
-        self.voteid = kwargs.get('voteId', None).decode('latin-1')
         self.datedecision = kwargs.get('dateDecision', None).decode('latin-1')
         self.decisiontype = kwargs.get('decisionType', None).decode('latin-1')
         self.uscite = kwargs.get('usCite', None).decode('latin-1')
@@ -77,7 +76,6 @@ class Case(object):
             ('caseid', self.caseid),
             ('docketid', self.docketid),
             ('caseissuesid', self.caseissuesid),
-            ('voteid', self.voteid),
             ('datedecision', self.datedecision),
             ('decisiontype', self.decisiontype),
             ('uscite', self.uscite),
