@@ -68,7 +68,7 @@ class ClerkBaseController(CementBaseController):
         self.app.render(data)
 
     @expose(help="Get Martin-Quinn justice scores")
-    def justice_terms(self):
+    def terms(self):
         """
         Initialize Martin-Quinn justice scores
         """
