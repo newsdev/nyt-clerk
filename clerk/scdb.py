@@ -69,6 +69,16 @@ class Case(object):
         self.minvotes = kwargs.get('minVotes', None).decode('latin-1')
         self.weighted_majvotes = 0
 
+        try:
+            self.majvotes = int(self.majvotes)
+        except ValueError:
+            self.majvotes = 0
+
+        try:
+            self.minvotes = int(self.minvotes)
+        except ValueError:
+            self.minvotes = 0
+
         def weight_majvotes(obj):
             if ((int(self.majvotes) + int(self.minvotes)) < 9):
                 """
@@ -211,6 +221,16 @@ class Vote(object):
         self.firstagreement = kwargs['firstAgreement'].decode('latin-1')
         self.secondagreement = kwargs['secondAgreement'].decode('latin-1')
         self.weighted_majvotes = 0
+
+        try:
+            self.majvotes = int(self.majvotes)
+        except ValueError:
+            self.majvotes = 0
+
+        try:
+            self.minvotes = int(self.minvotes)
+        except ValueError:
+            self.minvotes = 0
 
         def weight_majvotes(obj):
             if ((int(self.majvotes) + int(self.minvotes)) < 9):
