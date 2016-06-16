@@ -133,6 +133,7 @@ class JusticeTerm(object):
         self.term = kwargs.get('term', None)
         self.justice = kwargs.get('justice', None)
         self.justicename = kwargs.get('justiceName', None)
+        self.justiceterm = "%s-%s" % (self.term, self.justice)
         self.code = kwargs.get('code', None)
         self.post_mn = kwargs.get('post_mn', None)
         self.post_sd = kwargs.get('post_sd', None)
@@ -148,6 +149,7 @@ class JusticeTerm(object):
             ('term', self.term),
             ('justice', self.justice),
             ('justicename', self.justicename),
+            ('justiceterm', self.justicename),
             ('code', self.code),
             ('post_mn', self.post_mn),
             ('post_sd', self.post_sd),
