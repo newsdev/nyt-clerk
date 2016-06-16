@@ -67,6 +67,24 @@ class Case(object):
         self.splitvote = kwargs.get('splitVote', None).decode('latin-1')
         self.majvotes = kwargs.get('majVotes', None).decode('latin-1')
         self.minvotes = kwargs.get('minVotes', None).decode('latin-1')
+        self.weighted_majvotes = 0
+
+        def weight_majvotes(obj):
+            if ((int(self.majvotes) + int(self.minvotes)) < 9):
+                """
+                We assume missing justices voted with the majority.
+                4 minority votes = 0 weighted votes.
+                """
+                WEIGHTED_VOTES = (9,8,7,6,0)
+                return WEIGHTED_VOTES[int(self.minvotes)]
+            return int(self.majvotes)
+
+        if self.decisiondirection == "1":
+            self.weighted_majvotes = weight_majvotes(self)
+        elif self.decisiondirection == "2":
+            self.weighted_majvotes = weight_majvotes(self) * -1
+        elif self.decisiondirection == "3":
+            self.weighted_majvotes = 0
 
     def __unicode__(self):
         return "%s" % self.case
@@ -125,6 +143,7 @@ class Case(object):
             ('splitvote', self.splitvote),
             ('majvotes', self.majvotes),
             ('minvotes', self.minvotes),
+            ('weighted_majvotes', self.weighted_majvotes)
         ))
 
 class Vote(object):
@@ -191,6 +210,24 @@ class Vote(object):
         self.majority = kwargs['majority'].decode('latin-1')
         self.firstagreement = kwargs['firstAgreement'].decode('latin-1')
         self.secondagreement = kwargs['secondAgreement'].decode('latin-1')
+        self.weighted_majvotes = 0
+
+        def weight_majvotes(obj):
+            if ((int(self.majvotes) + int(self.minvotes)) < 9):
+                """
+                We assume missing justices voted with the majority.
+                4 minority votes = 0 weighted votes.
+                """
+                WEIGHTED_VOTES = (9,8,7,6,0)
+                return WEIGHTED_VOTES[int(self.minvotes)]
+            return int(self.majvotes)
+
+        if self.decisiondirection == "1":
+            self.weighted_majvotes = weight_majvotes(self)
+        elif self.decisiondirection == "2":
+            self.weighted_majvotes = weight_majvotes(self) * -1
+        elif self.decisiondirection == "3":
+            self.weighted_majvotes = 0
 
     def __unicode__(self):
         return "%s, %s" % (self.justice, self.case)
@@ -258,6 +295,7 @@ class Vote(object):
             ('majority', self.majority),
             ('firstagreement', self.firstagreement),
             ('secondagreement', self.secondagreement),
+            ('weighted_majvotes', self.weighted_majvotes)
         ))
 
 
