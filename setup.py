@@ -12,7 +12,7 @@ def read(filename):
 
 setup(
     name='nyt-clerk',
-    version='0.1.9',
+    version='0.1.10',
     author='Jeremy Bowers',
     author_email='jeremy.bowers@nytimes.com',
     url='https://github.com/newsdev/nyt-clerk',
@@ -26,7 +26,7 @@ setup(
     },
     license="Apache License 2.0",
     keywords='SCOTUS data parsing scraping legal law court',
-    install_requires=['beautifulsoup4','html5lib','lxml','requests','nameparser','csvkit', 'pymongo', 'clint'],
+    install_requires=['beautifulsoup4','html5lib','lxml','requests','nameparser','csvkit', 'pymongo', 'clint', 'cement'],
     classifiers=['Development Status :: 3 - Alpha',
                  'Intended Audience :: Developers',
                  'Programming Language :: Python',
