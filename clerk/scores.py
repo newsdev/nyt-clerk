@@ -149,7 +149,7 @@ class JusticeTerm(object):
             ('term', self.term),
             ('justice', self.justice),
             ('justicename', self.justicename),
-            ('justiceterm', self.justicename),
+            ('justiceterm', self.justiceterm),
             ('code', self.code),
             ('post_mn', self.post_mn),
             ('post_sd', self.post_sd),
