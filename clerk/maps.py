@@ -1284,7 +1284,7 @@ LAW_SUPP_CHOICES = [
     ('236', 'Seventeenth Amendment'),
     ('237', 'Twenty-First Amendment'),
     ('238', 'Twenty-Fourth Amendment'),
-    ('239', 'Second Ammendment'),
+    ('239', 'Second Amendment'),
     ('300', 'Americans with Disabilities Act'),
     ('302', 'Age Discrimination in Employment'),
     ('303', 'Aid to Families with Dependent Children provisions of the Social Security Act, plus amendments'),
