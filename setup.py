@@ -12,7 +12,7 @@ def read(filename):
 
 setup(
     name='nyt-clerk',
-    version='0.1.11',
+    version='0.1.12',
     author='Jeremy Bowers',
     author_email='jeremy.bowers@nytimes.com',
     url='https://github.com/newsdev/nyt-clerk',
