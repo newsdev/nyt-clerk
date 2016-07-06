@@ -365,11 +365,12 @@ class Load(object):
                 with open(file_path, 'rU') as readfile:
                     if data_type == 'votes':
                         self.votes = list([
-                            Vote(**r) for r in list([v for v in csv.DictReader(readfile) if v['voteId'].strip() != ''])
+                            Vote(**r) for r in list([v for v in csv.DictReader(readfile) if v['voteId'].strip() != '' and v['voteId'].strip() != 'NULL'])
                         ])
+                        self.votes = [v for v in self.votes if v.voteid]
                     if data_type == 'cases':
                         self.cases = list([
-                            Case(**r) for r in list([c for c in csv.DictReader(readfile) if c['caseId'].strip() != ''])
+                            Case(**r) for r in list([c for c in csv.DictReader(readfile) if c['caseId'].strip() != '' and c['caseId'].strip() != 'NULL'])
                         ])
 
     def clean(self):
