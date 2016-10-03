@@ -187,8 +187,8 @@ class Justice(object):
 class Load(object):
 
     def __init__(self, **kwargs):
-        self.MQ_JUSTICES_URL = 'http://mqscores.berkeley.edu/media/2014/justices.csv'
-        self.MQ_COURTS_URL = 'http://mqscores.berkeley.edu/media/2014/court.csv'
+        self.MQ_JUSTICES_URL = 'http://mqscores.berkeley.edu/media/2015/justices.csv'
+        self.MQ_COURTS_URL = 'http://mqscores.berkeley.edu/media/2015/court.csv'
         self.SC_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/12c06863f944515bbd3122ac7f0461219c424edd/segal_cover_scores.csv'
         self.SCDB_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/12c06863f944515bbd3122ac7f0461219c424edd/scdb_justices.csv'
         self.DATA_DIRECTORY = '/tmp'
@@ -206,9 +206,8 @@ class Load(object):
         ]:
             r = requests.get(filename)
             filepath = self.DATA_DIRECTORY + '/' + filename.split('/')[-1]
-            if not os.path.isfile(filepath):
-                with open(filepath, 'w') as writefile:
-                    writefile.write(r.content)
+            with open(filepath, 'w') as writefile:
+                writefile.write(r.content)
 
     def load(self, data_type):
         if data_type == 'justice_terms':
