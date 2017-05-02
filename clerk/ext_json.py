@@ -1,4 +1,4 @@
-import json
+import ujson as json
 import sys
 from bson import json_util
 from cement.core import handler, output
