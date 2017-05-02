@@ -205,7 +205,7 @@ class Load(object):
             self.SCDB_JUSTICES_URL
         ]:
             filepath = self.DATA_DIRECTORY + '/' + filename.split('/')[-1]
-            os.system('curl -o %s %s' % (filename, filepath))
+            os.system('curl -o %s %s' % (filepath, filename))
 
     def load(self, data_type):
         if data_type == 'justice_terms':
