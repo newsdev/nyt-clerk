@@ -44,7 +44,7 @@ class ClerkBaseController(CementBaseController):
         Initialize SCDB votes
         """
         self.app.log.info('Getting SCDB votes (one per Justice per case) for\
- terms 1791-2014')
+ terms 1791-2016')
 
         l = scdb.Load()
         l.download()
@@ -58,7 +58,7 @@ class ClerkBaseController(CementBaseController):
         """
         Initialize SCDB cases
         """
-        self.app.log.info('Getting SCDB cases for terms 1791-2015')
+        self.app.log.info('Getting SCDB cases for terms 1791-2016')
 
         l = scdb.Load()
         l.download()
