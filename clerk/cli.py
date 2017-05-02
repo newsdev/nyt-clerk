@@ -50,6 +50,7 @@ class ClerkBaseController(CementBaseController):
         l.download()
         l.unzip()
         l.load('votes')
+        l.clean()
         data = l.votes
         self.app.render(data)
 
@@ -64,6 +65,7 @@ class ClerkBaseController(CementBaseController):
         l.download()
         l.unzip()
         l.load('cases')
+        l.clean()
         data = l.cases
         self.app.render(data)
 

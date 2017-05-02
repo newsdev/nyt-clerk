@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from collections import OrderedDict
+import codecs
 import csv
 import datetime
 import json
@@ -321,14 +322,26 @@ class Vote(object):
 
 class Load(object):
     DATA_MAP = {
-       'votes': {
-            'url': 'http://scdb.wustl.edu/_brickFiles/Legacy_01/SCDB_Legacy_01_justiceCentered_Citation.csv.zip',
-            'filename': 'SCDB_Legacy_01_justiceCentered_Citation'
-        },
-        'cases': {
-            'url': 'http://scdb.wustl.edu/_brickFiles/Legacy_01/SCDB_Legacy_01_caseCentered_Citation.csv.zip',
-            'filename': 'SCDB_Legacy_01_caseCentered_Citation'
-        }
+       'votes': [
+            {
+                'url': 'http://scdb.wustl.edu/_brickFiles/2016_01/SCDB_2016_01_justiceCentered_Citation.csv.zip',
+                'filename': 'SCDB_2016_01_justiceCentered_Citation'
+            },
+            {
+                'url': 'http://scdb.wustl.edu/_brickFiles/Legacy_03/SCDB_Legacy_03_justiceCentered_Citation.csv.zip',
+                'filename': 'SCDB_Legacy_03_justiceCentered_Citation'
+            }
+        ],
+        'cases': [
+            {
+                'url': 'http://scdb.wustl.edu/_brickFiles/2016_01/SCDB_2016_01_caseCentered_Citation.csv.zip',
+                'filename': 'SCDB_2016_01_caseCentered_Citation'
+            },
+            {
+                'url': 'http://scdb.wustl.edu/_brickFiles/Legacy_03/SCDB_Legacy_03_caseCentered_Citation.csv.zip',
+                'filename': 'SCDB_Legacy_03_caseCentered_Citation'
+            }
+        ]
     }
 
     def __init__(self, **kwargs):
@@ -338,39 +351,42 @@ class Load(object):
 
     def download(self):
         for data_type in ['votes', 'cases']:
-            file_path = '%s/%s.csv.zip' % (
-                self.data_directory,
-                self.DATA_MAP[data_type]['filename']
-            )
-            if not os.path.isfile(file_path):
-                os.system('curl -o %s %s' % (file_path, self.DATA_MAP[data_type]['url']))
+            for data_set in self.DATA_MAP[data_type]:
+                file_path = '%s/%s.csv.zip' % (
+                    self.data_directory,
+                    data_set['filename']
+                )
+                if not os.path.isfile(file_path):
+                    os.system('curl -o %s %s' % (file_path, data_set['url']))
 
     def unzip(self):
         for data_type in ['votes', 'cases']:
-            file_path = '%s/%s.csv' % (
-                self.data_directory,
-                self.DATA_MAP[data_type]['filename']
-            )
-            if not os.path.isfile(file_path):
-                os.system('unzip %s -d %s' % (file_path, self.data_directory))
+            for data_set in self.DATA_MAP[data_type]:
+                file_path = '%s/%s.csv.zip' % (
+                    self.data_directory,
+                    data_set['filename']
+                )
+                if os.path.isfile(file_path):
+                    os.system('unzip %s -d %s' % (file_path, self.data_directory))
 
     def load(self, data_type):
+        for data_set in self.DATA_MAP[data_type]:
             file_path = '%s/%s.csv' % (
                 self.data_directory,
-                self.DATA_MAP[data_type]['filename']
+                data_set['filename']
             )
             if os.path.isfile(file_path):
                 with open(file_path, 'rU', encoding='latin-1') as readfile:
+
                     if data_type == 'votes':
-                        self.votes = list([
+                        self.votes += list([
                             Vote(**r) for r in list([v for v in csv.DictReader(readfile) if v['voteId'].strip() != '' and v['voteId'].strip() != 'NULL'])
                         ])
                         self.votes = [v for v in self.votes if v.voteid]
                     if data_type == 'cases':
-                        self.cases = list([
+                        self.cases += list([
                             Case(**r) for r in list([c for c in csv.DictReader(readfile) if c['caseId'].strip() != '' and c['caseId'].strip() != 'NULL'])
                         ])
 
     def clean(self):
-        os.system('rm -f %s/SCDB_Legacy_01_*Centered_Citation.csv.zip' %
-            self.data_directory)
+        os.system('rm -f %s/SCDB*.zip' % self.data_directory)
