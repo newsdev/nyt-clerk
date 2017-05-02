@@ -204,10 +204,8 @@ class Load(object):
             self.SC_JUSTICES_URL,
             self.SCDB_JUSTICES_URL
         ]:
-            r = requests.get(filename)
             filepath = self.DATA_DIRECTORY + '/' + filename.split('/')[-1]
-            with open(filepath, 'w') as writefile:
-                writefile.write(r.content)
+            os.system('curl -o %s %s' % (filename, filepath))
 
     def load(self, data_type):
         if data_type == 'justice_terms':
