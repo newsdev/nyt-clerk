@@ -4,7 +4,7 @@ from bson import json_util
 from cement.core import handler, output
 
 
-class ElexJSONOutputHandler(output.CementOutputHandler):
+class JSONOutputHandler(output.CementOutputHandler):
     """
     A custom JSON output handler
     """
@@ -46,4 +46,4 @@ class ElexJSONOutputHandler(output.CementOutputHandler):
 
 
 def load(app):
-    handler.register(ElexJSONOutputHandler)
+    handler.register(JSONOutputHandler)

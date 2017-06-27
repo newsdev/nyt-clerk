@@ -1,5 +1,5 @@
 .. figure:: https://cloud.githubusercontent.com/assets/109988/9503675/7a4bdfee-4c06-11e5-8619-e8f85ccb49f2.png
-   :alt: 
+   :alt:
 
 Usage
 =====
@@ -16,17 +16,17 @@ Data
    cases, excluding the justice and vote details.
 -  ``clerk votes``: SCDB fields about a single justice's
    vote in a single case.
--  ``clerk courts``: Data about the ideology for 
+-  ``clerk courts``: Data about the ideology for
    each Court term.
 -  ``clerk justices``: Data about the ideology and
    qualifications for each Justice before they were confirmed.
--  ``clerk justice_terms``: Data about the ideology of
+-  ``clerk terms``: Data about the ideology of
    each individual Justice during each Court term.
 
 SCDB Data
 ---------
 
-SCDB data includes cases from 1791 term to the 2014 term. Many fields
+SCDB data includes cases from 1791 term to the 2015 term. Many fields
 need to be mapped to their full values. The SCDB `maintains an online
 codebook <http://scdb.wustl.edu/documentation.php>`__ with these maps.
 

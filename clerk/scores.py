@@ -67,6 +67,7 @@ class CourtTerm(object):
         self.alito = kwargs.get('Alito', None)
         self.sotomayor = kwargs.get('Sotomayor', None)
         self.kagan = kwargs.get('Kagan', None)
+        self.gorsuch = kwargs.get('Gorsuch', None)
 
     def __unicode__(self):
         return "%s" % (self.term)
@@ -125,6 +126,7 @@ class CourtTerm(object):
             ('alito', self.alito),
             ('sotomayor', self.sotomayor),
             ('kagan', self.kagan),
+            ('gorsuch', self.gorsuch),
         ))
 
 class JusticeTerm(object):
@@ -189,8 +191,8 @@ class Load(object):
     def __init__(self, **kwargs):
         self.MQ_JUSTICES_URL = 'http://mqscores.berkeley.edu/media/2015/justices.csv'
         self.MQ_COURTS_URL = 'http://mqscores.berkeley.edu/media/2015/court.csv'
-        self.SC_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/12c06863f944515bbd3122ac7f0461219c424edd/segal_cover_scores.csv'
-        self.SCDB_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/12c06863f944515bbd3122ac7f0461219c424edd/scdb_justices.csv'
+        self.SC_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/552dc07336b649a7b3574169fc115f9cb2874a57/segal_cover_scores.csv'
+        self.SCDB_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/552dc07336b649a7b3574169fc115f9cb2874a57/scdb_justices.csv'
         self.DATA_DIRECTORY = '/tmp'
 
         self.justices = []
