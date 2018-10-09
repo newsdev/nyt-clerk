@@ -1509,5 +1509,6 @@ NATURAL_COURT_CHOICES = [
     ('1703', 'Roberts 3: August 09, 2009 - August 06, 2010'),
     ('1704', 'Roberts 4: August 07, 2010 - February 13, 2016'),
     ('1705', 'Roberts 5: February 14, 2016 - April 09, 2017'),
-    ('1706', 'Roberts 6: April 10, 2017 -'),
+    ('1706', 'Roberts 6: April 10, 2017 - October 05, 2018'),
+    ('1707', 'Roberts 7: October 06, 2018 -')
 ]
