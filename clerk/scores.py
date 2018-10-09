@@ -193,8 +193,8 @@ class Load(object):
     def __init__(self, **kwargs):
         self.MQ_JUSTICES_URL = 'http://mqscores.berkeley.edu/media/2015/justices.csv'
         self.MQ_COURTS_URL = 'http://mqscores.berkeley.edu/media/2015/court.csv'
-        self.SC_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/5ca84ed28f6595edb31936a8222cf5ed8fb628aa/segal_cover_scores.csv'
-        self.SCDB_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/5ca84ed28f6595edb31936a8222cf5ed8fb628aa/scdb_justices.csv'
+        self.SC_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/514c4949cbd633d685e8a1d1851b70555ec7c194/segal_cover_scores.csv'
+        self.SCDB_JUSTICES_URL = 'https://gist.githubusercontent.com/jeremyjbowers/f36efe6db30056b1a587/raw/514c4949cbd633d685e8a1d1851b70555ec7c194/scdb_justices.csv'
         self.DATA_DIRECTORY = '/tmp'
 
         self.justices = []
