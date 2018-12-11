@@ -1,4 +1,3 @@
-import bson
 from functools import wraps
 import pkg_resources
 
