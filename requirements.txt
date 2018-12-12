@@ -6,5 +6,5 @@ nameparser
 csvkit
 pymongo
 clint
-cement=<3.0
+cement=<2.10
 ujson
